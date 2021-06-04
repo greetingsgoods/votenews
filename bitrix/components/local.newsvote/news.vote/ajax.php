@@ -1,4 +1,7 @@
 <?
+
+use Bitrix\Main\Loader;
+
 if (!(bool)$_POST["elementID"]) {
 	return;
 	error_reporting(0);
@@ -18,6 +21,9 @@ $remoteIP = htmlspecialcharsbx($_SERVER['REMOTE_ADDR']);
 $boolVote = function () {
 	return !empty($_POST['type']);
 };
+if (!class_exists('Local\Newsvote\EntityTable', false)) {
+	Loader::includeModule('local.newsvote');
+}
 $obj = new Local\Newsvote\EntityTable;
 $parameters = [
 	'filter' => [
@@ -35,6 +41,7 @@ if (!$boolExistRecords) {
 		'IP' => $remoteIP,
 		'vote' => 'Y'
 	]);
+
 	$arElement = CIBlockElement::GetByID($elementID)->GetNextElement();
 	$arFields = $arElement->GetProperties();
 
@@ -84,22 +91,22 @@ if (!$boolExistRecords) {
 		}
 	}
 
-	$dbProperty = CIBlockElement::GetProperty($iblockID, $elementID, array("SORT" => "ASC"), array("CODE" => "LIKE"));
-	$arProperty = $dbProperty->Fetch();
-	if (empty($arProperty["VALUE"]))
-		$arResult["LIKE"] = 0;
-	else
-		$arResult["LIKE"] = intval($dbProperty->SelectedRowsCount());
-
-	$dbProperty = CIBlockElement::GetProperty($iblockID, $elementID, array("SORT" => "ASC"), array("CODE" => "DISLIKE"));
-	$arProperty = $dbProperty->Fetch();
-	if (empty($arProperty["VALUE"]))
-		$arResult["DISLIKE"] = 0;
-	else
-		$arResult["DISLIKE"] = intval($dbProperty->SelectedRowsCount());
-
-	echo $arResult["LIKE"] . "/" . $arResult["DISLIKE"];
-
 
 }
+
+$dbProperty = CIBlockElement::GetProperty($iblockID, $elementID, array("SORT" => "ASC"), array("CODE" => "LIKE"));
+$arProperty = $dbProperty->Fetch();
+if (empty($arProperty["VALUE"]))
+	$arResult["LIKE"] = 0;
+else
+	$arResult["LIKE"] = intval($dbProperty->SelectedRowsCount());
+
+$dbProperty = CIBlockElement::GetProperty($iblockID, $elementID, array("SORT" => "ASC"), array("CODE" => "DISLIKE"));
+$arProperty = $dbProperty->Fetch();
+if (empty($arProperty["VALUE"]))
+	$arResult["DISLIKE"] = 0;
+else
+	$arResult["DISLIKE"] = intval($dbProperty->SelectedRowsCount());
+
+echo $arResult["LIKE"] . "/" . $arResult["DISLIKE"];
 

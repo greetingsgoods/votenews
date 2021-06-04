@@ -5,6 +5,7 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Main\IO\File;
 use \Bitrix\Main\Localization\Loc;
 use \Bitrix\Main\Application;
+use \Bitrix\Main\Loader;
 use Bitrix\Main\ModuleManager;
 
 Loc::loadMessages(__FILE__);
@@ -100,7 +101,9 @@ class local_newsvote extends CModule
 
 	function createEntity()
 	{
-
+		if (!Loader::includeModule($this->MODULE_ID)) {
+			return false;
+		}
 		$rc = new Local\Newsvote\EntityTable;
 		try {
 			$rc::getEntity()->createDbTable();
