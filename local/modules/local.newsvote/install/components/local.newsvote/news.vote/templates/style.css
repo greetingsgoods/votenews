@@ -1,0 +1,13 @@
+.vote-form span {
+    display: block !important;
+    text-decoration: none !important;
+    cursor: pointer
+}
+
+.vote-form .like {
+    background: url(images/like.png) 0 0 no-repeat !important;
+}
+
+.vote-form .dislike {
+    background: url(images/dislike.png) 0 0 no-repeat !important;
+}

@@ -1,0 +1,15 @@
+.vote-form {
+}
+
+.vote-form a {
+    display: block !important;
+    text-decoration: none !important;
+}
+
+.vote-form a#like {
+    background: url(images/like.png) 0 0 no-repeat !important;
+}
+
+.vote-form a#dislike {
+    background: url(images/dislike.png) 0 0 no-repeat !important;
+}
