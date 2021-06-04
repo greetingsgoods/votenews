@@ -18,10 +18,23 @@ $remoteIP = htmlspecialcharsbx($_SERVER['REMOTE_ADDR']);
 $boolVote = function () {
 	return !empty($_POST['type']);
 };
-$boolExistRecords = false;
+$obj = new Local\Newsvote\EntityTable;
+$parameters = [
+	'filter' => [
+		'elementID' => $elementID,
+		'IP' => $remoteIP,
+		'iblocktID' => $iblockID
+	]
+];
+$boolExistRecords = $obj::getList($parameters)->fetch();
 
 if (!$boolExistRecords) {
-
+	$result = $obj::add([
+		'elementID' => $elementID,
+		'iblocktID' => $iblockID,
+		'IP' => $remoteIP,
+		'vote' => 'Y'
+	]);
 	$arElement = CIBlockElement::GetByID($elementID)->GetNextElement();
 	$arFields = $arElement->GetProperties();
 
