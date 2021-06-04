@@ -9,23 +9,23 @@ class NewsVoteComponent extends CBitrixComponent
 	{
 		if ($this->startResultCache()) {
 
-			if (!empty($arParams["ELEMENT_ID"])) {
+			if (!empty($this->arParams["ELEMENT_ID"])) {
 
 				CModule::IncludeModule("iblock");
 
-				$dbProperty = CIBlockElement::GetProperty($arParams["IBLOCK_ID"], $arParams["ELEMENT_ID"], array("SORT" => "ASC"), array("CODE" => "LIKE"));
+				$dbProperty = CIBlockElement::GetProperty($this->arParams["IBLOCK_ID"], $this->arParams["ELEMENT_ID"], array("SORT" => "ASC"), array("CODE" => "LIKE"));
 				$arProperty = $dbProperty->Fetch();
 				if (empty($arProperty["VALUE"]))
-					$arResult["LIKE"] = 0;
+					$this->arResult["LIKE"] = 0;
 				else
-					$arResult["LIKE"] = intval($dbProperty->SelectedRowsCount());
+					$this->arResult["LIKE"] = (int)$dbProperty->SelectedRowsCount();
 
-				$dbProperty = CIBlockElement::GetProperty($arParams["IBLOCK_ID"], $arParams["ELEMENT_ID"], array("SORT" => "ASC"), array("CODE" => "DISLIKE"));
+				$dbProperty = CIBlockElement::GetProperty($this->arParams["IBLOCK_ID"], $this->arParams["ELEMENT_ID"], array("SORT" => "ASC"), array("CODE" => "DISLIKE"));
 				$arProperty = $dbProperty->Fetch();
 				if (empty($arProperty["VALUE"]))
-					$arResult["DISLIKE"] = 0;
+					$this->arResult["DISLIKE"] = 0;
 				else
-					$arResult["DISLIKE"] = intval($dbProperty->SelectedRowsCount());
+					$this->arResult["DISLIKE"] = (int)$dbProperty->SelectedRowsCount();
 
 				$this->IncludeComponentTemplate();
 

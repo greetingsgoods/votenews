@@ -95,6 +95,18 @@ class local_newsvote extends CModule
 	function InstallDB($arParams = array())
 	{
 		$this->createNecessaryIblocks();
+		$this->createEntity();
+	}
+
+	function createEntity()
+	{
+
+		$rc = new Local\Newsvote\EntityTable;
+		try {
+			$rc::getEntity()->createDbTable();
+		} catch (Exception $e) {
+		}
+		return true;
 	}
 
 	function createNecessaryIblocks()
@@ -333,6 +345,13 @@ class local_newsvote extends CModule
 		Option::delete($this->MODULE_ID);
 		$this->deleteNecessaryIblocks();
 		$this->deleteNecessaryUserFields();
+		$this->deleteEntity();
+	}
+
+	function deleteEntity()
+	{
+		$connection = Application::getConnection()
+			->query("DROP TABLE IF EXISTS a_newsvote;");
 	}
 
 	function deleteNecessaryIblocks()
